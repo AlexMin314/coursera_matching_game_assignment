@@ -1,38 +1,42 @@
-var numberOfFaces = 2;
-var theLeftSide = document.getElementById("leftSide");
-var theRightSide = document.getElementById("rightSide");
-var theBody = document.getElementsByTagName("body")[0];
+// This is assignment of Coursera JS lecture.
+
+var numFaces = 2;
+  leftSide = document.getElementById("leftSide");
+  rightSide = document.getElementById("rightSide");
+  theBody = document.getElementsByTagName("body")[0];
 
 function generateFaces() {
-    for (var i = 0; i < numberOfFaces; i++) {
-        var random_top = Math.random() * 400;
-        random_top = Math.floor(random_top);
-        var random_left = Math.random() * 400;
-        random_left = Math.floor(random_left);
-        var img_node = document.createElement("img");
-        img_node.src = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
-        img_node.style.top = random_top + "px";
-        img_node.style.left = random_left + "px";
-        theLeftSide.appendChild(img_node);
+  var i, top, left, imgNode, leftImg;
+
+  for (i = 0; i < numFaces; i++) {
+    top = Math.floor(Math.random() * 400);
+    left = Math.floor(Math.random() * 400);
+    imgNode = document.createElement("img");
+    imgNode.src = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+    imgNode.style.top = top + "px";
+    imgNode.style.left = left + "px";
+    leftSide.appendChild(imgNode);
+  }
+
+  leftImg = leftSide.cloneNode(true);
+  leftImg.removeChild(leftImg.lastChild);
+  rightSide.appendChild(leftImg);
+
+  leftSide.lastChild.onclick = function nextLevel(e) {
+    e.stopPropagation();
+    while (leftSide.firstChild) {
+      leftSide.removeChild(leftSide.firstChild);
     }
-    var leftSideImages = theLeftSide.cloneNode(true);
-    leftSideImages.removeChild(leftSideImages.lastChild);
-    theRightSide.appendChild(leftSideImages);
-    theLeftSide.lastChild.onclick =
-        function nextLevel(event) {
-            event.stopPropagation();
-            while (theLeftSide.firstChild)
-                theLeftSide.removeChild(theLeftSide.firstChild);
-            while (theRightSide.firstChild) {
-                theRightSide.removeChild(theRightSide.firstChild);
-            }
-            numberOfFaces += 3;
-            generateFaces();
-        };
-    theBody.onclick =
-        function gameover() {
-            alert("Game Over!!");
-            theBody.onclick = null;
-            theLeftSide.lastChild.onclick = null;
-        }
+    while (rightSide.firstChild) {
+      rightSide.removeChild(rightSide.firstChild);
+    }
+    numFaces += 3;
+    generateFaces();
+  };
+
+  theBody.onclick = function gameover() {
+      alert("Game Over!!");
+      theBody.onclick = null;
+      leftSide.lastChild.onclick = null;
+    }
 }
